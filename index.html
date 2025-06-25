@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <style>
@@ -9,6 +9,11 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        overflow: hidden;
+      }
+
+      #map {
+        touch-action: none; /* Untuk menghindari masalah geser pada perangkat seluler */
       }
     </style>
   </head>
@@ -18,17 +23,23 @@
       var map = L.map("map", {
         center: [-7.782794123757193, 110.36709914609082], // Tugu Jogja
         zoom: 17,
-        zoomControl: false,
+        zoomControl: true,  // Aktifkan kontrol zoom
         attributionControl: false,
+        dragging: true, // Pastikan peta dapat digeser
+        touchZoom: true, // Enable zoom via touch (pinch zoom)
+        scrollWheelZoom: true, // Enable zoom via scroll
+        doubleClickZoom: true, // Enable zoom via double-click
       });
 
+      // Layer peta OpenStreetMap
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "",
+        attribution: "© OpenStreetMap contributors",
       }).addTo(map);
 
+      // Marker untuk lokasi awal
       var marker = L.marker([-7.782794123757193, 110.36709914609082])
         .addTo(map)
-        .bindPopup("Ini Tugu Jogja", marker);
+        .bindPopup("Ini Tugu Jogja");
 
       // Tangkap klik di peta dan kirim ke React Native
       map.on("click", function (e) {
